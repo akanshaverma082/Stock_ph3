@@ -8,53 +8,67 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Entity
+
+@Entity(name = "COMPANY")
 public class Company {
 	@Id
 	@GeneratedValue
 	private int id;
 	
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private String companyName;
-		
-	@Column(nullable = false)
-	private float turnOver;
-	    
-	@Column(nullable = false)
-	private String ceo;
-
+	
     @Column(nullable = false)
-	private String boardDirectors;
-	    
+    private float turnOver;
+    
+    @Column(nullable = false)
+    private String ceo;
+
 	@Column(nullable = false)
-	private String briefWriteup;
-	    
-	@OneToOne
+    private String boardDirectors;
+    
+    @Column(nullable = false)
+    private String briefWriteup;
+    
+    @OneToOne
     private IPODetails ipo;
-	    
-	@ManyToMany
-	private List<StockExchange> stockExchanges = new ArrayList<>();
-	    
-	@OneToMany(mappedBy = "company", fetch=FetchType.LAZY)
-	private List<StockPrice> stockPrices = new ArrayList<>();
-	  
-	@OneToOne
-	private Sectors sector;
-	
-	@OneToMany(mappedBy = "company", fetch=FetchType.LAZY)
+    
+    @JsonIgnore
+    @ManyToMany
+    private List<StockExchange> stockExchanges = new ArrayList<>();
+    
+//    @OneToMany(mappedBy = "company", fetch=FetchType.LAZY)
+//    private List<StockPrice> stockPrices = new ArrayList<>();
+  
+    @ManyToOne
+    private Sectors sector;
+    
+    @OneToMany(mappedBy = "company", fetch=FetchType.LAZY)
     private List<CompanyCode> companyCodes = new ArrayList<>();
-	
-	public Company() {
+
+	public Company(String companyName, float turnOver, String ceo, String boardDirectors, String briefWriteup, IPODetails ipo,
+			List<StockExchange> stockExchanges, List<StockPrice> stockPrices, Sectors sector) {
 		super();
+		this.companyName = companyName;
+		this.turnOver = turnOver;
+		this.ceo = ceo;
+		this.boardDirectors = boardDirectors;
+		this.briefWriteup = briefWriteup;
+		this.ipo = ipo;
+		this.stockExchanges = stockExchanges;
+//		this.stockPrices = stockPrices;
+		this.sector = sector;
 	}
-	
-	public Company( String companyName, float turnOver, String ceo, String boardDirectors, String briefWriteup) {
+
+	public Company(String companyName, float turnOver, String ceo, String boardDirectors, String briefWriteup) {
 		super();
 		this.companyName = companyName;
 		this.turnOver = turnOver;
@@ -62,7 +76,20 @@ public class Company {
 		this.boardDirectors = boardDirectors;
 		this.briefWriteup = briefWriteup;
 	}
-		    
+
+	public Company() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
 	public float getTurnOver() {
 		return turnOver;
 	}
@@ -99,7 +126,7 @@ public class Company {
 		return id;
 	}
 
-	@JsonBackReference
+//	@JsonManagedReference(value = "company-stockExchange")
 	public List<StockExchange> getStockExchanges() {
 		return stockExchanges;
 	}
@@ -108,16 +135,16 @@ public class Company {
 		this.stockExchanges.add(stockExchange);
 	}
 
-	@JsonManagedReference
-	public List<StockPrice> getStockPrices() {
-		return stockPrices;
-	}
+//	@JsonManagedReference(value = "stockPrice-company")
+//	public List<StockPrice> getStockPrices() {
+//		return stockPrices;
+//	}
 	
-	public void addStockPrice(StockPrice stockPrice) {
-		this.stockPrices.add(stockPrice);
-	}
+//	public void addStockPrice(StockPrice stockPrice) {
+//		this.stockPrices.add(stockPrice);
+//	}
 
-	@JsonBackReference
+	@JsonBackReference(value = "company-ipo")
 	public IPODetails getIpo() {
 		return ipo;
 	}
@@ -126,7 +153,7 @@ public class Company {
 		this.ipo = ipo;
 	}
 
-	@JsonBackReference
+	@JsonBackReference(value = "company-sector")
 	public Sectors getSector() {
 		return sector;
 	}
@@ -135,7 +162,7 @@ public class Company {
 		this.sector = sector;
 	}
 
-	@JsonManagedReference
+	@JsonManagedReference(value = "companyCode-company")
 	public List<CompanyCode> getCompanyCode() {
 		return companyCodes;
 	}
@@ -147,6 +174,10 @@ public class Company {
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", turnOver=" + turnOver + ", ceo=" + ceo + ", boardDirectors=" + boardDirectors
-				+ ", briefWriteup=" + briefWriteup + ", ipo=" + ipo + "]";
+				+ ", briefWriteup=" + briefWriteup + ", ipo=" + ipo + ", stockExchanges=" + stockExchanges + ", sector="
+				+ sector + ", companyCodes=" + companyCodes + "]";
 	}
+	
+
+	
 }

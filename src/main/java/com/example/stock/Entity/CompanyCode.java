@@ -8,9 +8,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class CompanyCode {
+
 	@Id
 	@GeneratedValue
 	private int id;
@@ -24,6 +27,9 @@ public class CompanyCode {
 	@OneToOne
 	private StockExchange stockExchange;
 
+	@OneToOne(mappedBy = "companyCode", fetch=FetchType.LAZY)
+	private StockPrice stockPrice;
+	
 	public int getCompanyCode() {
 		return companyCode;
 	}
@@ -32,7 +38,7 @@ public class CompanyCode {
 		this.companyCode = companyCode;
 	}
 
-	@JsonBackReference
+	@JsonBackReference(value = "companyCode-company")
 	public Company getCompany() {
 		return company;
 	}
@@ -41,13 +47,22 @@ public class CompanyCode {
 		this.company = company;
 	}
 
-	@JsonBackReference
+	@JsonBackReference(value = "companyCode-stockExchange")
 	public StockExchange getStockExchange() {
 		return stockExchange;
 	}
 
 	public void setStockExchange(StockExchange stockExchange) {
 		this.stockExchange = stockExchange;
+	}
+
+	@JsonManagedReference(value = "stockPrice-companyCode")
+	public StockPrice getStockPrice() {
+		return stockPrice;
+	}
+
+	public void setStockPrice(StockPrice stockPrice) {
+		this.stockPrice = stockPrice;
 	}
 
 	public CompanyCode() {
@@ -59,5 +74,12 @@ public class CompanyCode {
 		super();
 		this.companyCode = companyCode;
 	}
+
+	@Override
+	public String toString() {
+		return "CompanyCode [id=" + id + ", companyCode=" + companyCode + ", company=" + company + ", stockExchange="
+				+ stockExchange + ", stockPrice=" + stockPrice + "]";
+	}
+	
 
 }
