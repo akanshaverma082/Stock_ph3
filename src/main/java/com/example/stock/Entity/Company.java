@@ -45,8 +45,6 @@ public class Company {
     @ManyToMany
     private List<StockExchange> stockExchanges = new ArrayList<>();
     
-//    @OneToMany(mappedBy = "company", fetch=FetchType.LAZY)
-//    private List<StockPrice> stockPrices = new ArrayList<>();
   
     @ManyToOne
     private Sectors sector;

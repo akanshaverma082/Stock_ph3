@@ -16,9 +16,6 @@ public class StockPrice {
 	@GeneratedValue
 	private int id;
 	
-//	@ManyToOne
-//	private Company company;
-	
 	@ManyToOne
 	private StockExchange stockExchange;
 	
@@ -31,7 +28,8 @@ public class StockPrice {
 	@Column(nullable = false)
 	private String time;
 	
-	@OneToOne
+
+	@ManyToOne
 	private CompanyCode companyCode;
 
 	public float getStockPrice() {
@@ -62,23 +60,16 @@ public class StockPrice {
 		return id;
 	}
 
-//	@JsonBackReference(value = "stockPrice-company")
-//	public Company getCompany() {
-//		return company;
-//	}
 
 	@JsonBackReference(value = "stockPrice-stockExchange")
 	public StockExchange getStockExchange() {
 		return stockExchange;
 	}
 
-//	public void setCompany(Company company) {
-//		this.company = company;
-//	}
-
 	public void setStockExchange(StockExchange stockExchange) {
 		this.stockExchange = stockExchange;
 	}
+
 
 	@JsonBackReference(value = "stockPrice-companyCode")
 	public CompanyCode getCompanyCode() {
