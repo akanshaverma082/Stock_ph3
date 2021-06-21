@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.stock.Entity.Company;
+import com.example.stock.Entity.IPODetails;
 import com.example.stock.repository.CompanyRepo;
 
 @Service

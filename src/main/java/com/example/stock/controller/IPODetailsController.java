@@ -7,7 +7,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,7 @@ public class IPODetailsController {
 	@PostMapping("/addIpo")
 	public String addIpo(@RequestBody IPODetails ipo) {
 	    HashMap<String, String> map = new HashMap<>();
+	    service.saveIpo(ipo);
 	    
 	         return "okay";
 	}
@@ -34,8 +37,15 @@ public class IPODetailsController {
 		return service.updateIpo(ipo);
 	}
 	
+	
 	@GetMapping("/ipos")
 	public List<IPODetails> getIpos(){
 		return service.getIpos();
+	}
+	@DeleteMapping("/deleteIPO/{id}")
+	public String deleteIPO(@PathVariable int id) 
+	{   
+		service.deleteIPO(id);
+		return "deleted";
 	}
 }

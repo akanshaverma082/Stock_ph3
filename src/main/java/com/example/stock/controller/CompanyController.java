@@ -48,5 +48,8 @@ public class CompanyController {
 	public List<Company> searchCompany(@PathVariable String searchString) {
 		return service.searchCompany(searchString);
 	}
-
+	@GetMapping("/companies")
+	public List<Company> getCompanies(){
+		return service.getCompanies();
+	}
 }

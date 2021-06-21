@@ -23,6 +23,9 @@ public class IpoService {
 		existingIpo.setRemarks(ipo.getRemarks());
 		return repository.save(existingIpo);
 	}
+	public void deleteIPO(int id) {
+		repository.deleteById(id);
+	}
 	
 	public List<IPODetails> getIpos() {
 		return repository.findAll();
