@@ -24,6 +24,10 @@ public class CompanyService {
 	public Company findById( int id ) {
 		return repository.findById(id).orElse(null);
 	}
+	public Company findByName(String companyName)
+	{
+		return repository.findByCompanyName(companyName);
+	}
 
 	public Company updateCompany(Company company) {
 		Company existingCompany = repository.findById(company.getId()).orElse(null);
@@ -41,6 +45,12 @@ public class CompanyService {
 	public List<Company> searchCompany(String searchString){
 		return repository.getCompanyBySearch(searchString);
 	}
-	
-
+	public boolean CompanyNameUniq(String companyName) {
+		Company company = repository.findByCompanyName(companyName);
+		if(company != null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }

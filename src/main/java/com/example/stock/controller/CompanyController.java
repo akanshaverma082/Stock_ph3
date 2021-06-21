@@ -4,6 +4,8 @@ import java.util.List;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +26,16 @@ public class CompanyController {
 	CompanyService service;
 	
 	@PostMapping("/addCompany")
-	public Company addCompany(@RequestBody Company company) {
-		return service.saveCompany(company);
+	public ResponseEntity <Company>addCompany(@RequestBody Company company) {
+		boolean uniqueCompanyName = service.CompanyNameUniq(company.getCompanyName());
+		if(!uniqueCompanyName) {
+			return new  ResponseEntity<Company>(company,HttpStatus.BAD_REQUEST);
+		} 
+		else {
+			service.saveCompany(company);
+			return new  ResponseEntity<Company>(service.saveCompany(company),HttpStatus.OK);
+			
+		}
 	}
 	
 	@PutMapping("/updateCompany")
@@ -36,6 +46,11 @@ public class CompanyController {
 	@GetMapping("/getCompany/{id}")
 	public Company getCompany(@PathVariable int id) {
 		return service.findById(id);
+	}
+	@GetMapping("/getCompanybyname/{companyName}")
+	public Company getCompanybyname(@PathVariable String companyName)
+	{
+		return service.findByName(companyName);
 	}
 	
 	@GetMapping("/getIpoFromCompany/{id}")
