@@ -39,6 +39,7 @@ public class CompanyService {
 	}
 	
 	public void deleteCompany(int id) {
+		
 		repository.deleteById(id);
 	}
 	
