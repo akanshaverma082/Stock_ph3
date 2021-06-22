@@ -6,12 +6,14 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.stock.Entity.Company;
@@ -19,8 +21,9 @@ import com.example.stock.Entity.IPODetails;
 import com.example.stock.service.CompanyService;
 
 
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequestMapping("/stockcompany")
 public class CompanyController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -40,14 +43,19 @@ public class CompanyController {
 		}
 	}
 	@DeleteMapping("/delete/{id}")
-	public String deleteCompanies(@PathVariable int id){
-		 service.deleteCompany(id);
-		return "Ok";
+	public ResponseEntity <Company>DeleteCompany(@PathVariable int id) 
+	{
+		service.deleteCompany(id);
+      return new  ResponseEntity<Company>(HttpStatus.OK);
+		
 	}
+
 	
-	@PutMapping("/updateCompany")
-	public Company updateCompany(@RequestBody Company company) {
-		return service.updateCompany(company);
+	
+	@PutMapping("/updateCompany/{id}")
+	public  ResponseEntity <Company>addCompany(@RequestBody Company company,@PathVariable int id) {
+		return new  ResponseEntity<Company>(service.updateCompany(company, id),HttpStatus.OK);
+		
 	}
 	
 	@GetMapping("/getCompany/{id}")
