@@ -45,8 +45,16 @@ public class CompanyController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity <Company>DeleteCompany(@PathVariable int id) 
 	{
+		Company co1=service.findById(id);
+		if(co1!=null)
+		{
 		service.deleteCompany(id);
       return new  ResponseEntity<Company>(HttpStatus.OK);
+		}
+		else
+		{
+			 return new  ResponseEntity<Company>(HttpStatus.BAD_REQUEST);
+		}
 		
 	}
 
@@ -54,14 +62,33 @@ public class CompanyController {
 	
 	@PutMapping("/updateCompany/{id}")
 	public  ResponseEntity <Company>addCompany(@RequestBody Company company,@PathVariable int id) {
+		Company co1=service.findById(id);
+		if(co1!=null) {
 		return new  ResponseEntity<Company>(service.updateCompany(company, id),HttpStatus.OK);
+		}
+		else
+		{
+			return new  ResponseEntity<Company>(HttpStatus.BAD_REQUEST);
+		}
 		
 	}
 	
+	//@GetMapping("/getCompany/{id}")
+	//public Company getCompany(@PathVariable int id) {
+		//return service.findById(id);
+	//}
 	@GetMapping("/getCompany/{id}")
-	public Company getCompany(@PathVariable int id) {
-		return service.findById(id);
+	public  ResponseEntity <Company>getCompanybyid(@PathVariable int id)
+	{
+		Company co=service.findById(id);
+		if(co!=null)
+		return new  ResponseEntity<Company>(service.findById(id),HttpStatus.OK);
+		else
+			return new  ResponseEntity<Company>(HttpStatus.BAD_REQUEST);
+			
 	}
+	
+	
 	@GetMapping("/getCompanybyname/{companyName}")
 	public Company getCompanybyname(@PathVariable String companyName)
 	{
