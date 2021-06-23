@@ -31,19 +31,23 @@ public class StockPriceController {
 	@Autowired
 	StockExchangeService stockExchangeService;
 	
+	//@PostMapping("/addStockPrice")
+	//public String addStockPrice(@RequestBody List<StockPrice> stockPrice) {
+		//int _companyCode;
+		//CompanyCode companyCode;
+		//StockExchange stockExchange;
+		//for(StockPrice _stockPrice : stockPrice) {
+			//_companyCode = _stockPrice.getCompanyCode().getCompanyCode();
+			//companyCode = companyCodeService.findByCompanyCode(_companyCode);
+			//_stockPrice.setCompanyCode(companyCode);
+			//stockExchange = stockExchangeService.getByStockExchangeName(_stockPrice.getStockExchange().getStockExchangeName());
+			//_stockPrice.setStockExchange(stockExchange);
+			//stockPriceService.saveStockPrice(_stockPrice);
+		//}
+		//return "Saved";
+	//}
 	@PostMapping("/addStockPrice")
-	public String addStockPrice(@RequestBody List<StockPrice> stockPrice) {
-		int _companyCode;
-		CompanyCode companyCode;
-		StockExchange stockExchange;
-		for(StockPrice _stockPrice : stockPrice) {
-			_companyCode = _stockPrice.getCompanyCode().getCompanyCode();
-			companyCode = companyCodeService.findByCompanyCode(_companyCode);
-			_stockPrice.setCompanyCode(companyCode);
-			stockExchange = stockExchangeService.getByStockExchangeName(_stockPrice.getStockExchange().getStockExchangeName());
-			_stockPrice.setStockExchange(stockExchange);
-			stockPriceService.saveStockPrice(_stockPrice);
+	public StockPrice addStockPrice(@RequestBody StockPrice stockPrice) {
+		return stockPriceService.saveStockPrice(stockPrice);
 		}
-		return "Saved";
-	}
 }
